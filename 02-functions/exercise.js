@@ -17,8 +17,7 @@
  * @returns {string}
  */
 export function greet(name) {
-  // TODO: return a template literal.
-  throw new Error("greet is not written yet");
+  return `Hello, ${name}!`;
 }
 
 /**
@@ -32,8 +31,7 @@ export function greet(name) {
  * @returns {number}
  */
 export const double = (n) => {
-  // TODO: replace this whole body. Keep `export const double =`.
-  throw new Error("double is not written yet");
+  return n * 2;
 };
 
 /**
@@ -48,8 +46,7 @@ export const double = (n) => {
  * @returns {number} the price after the discount
  */
 export const applyDiscount = (amount, percent) => {
-  // TODO: subtract the percentage from the amount.
-  throw new Error("applyDiscount is not written yet");
+  return amount - (amount * percent) / 100;
 };
 
 /**
@@ -89,3 +86,9 @@ export const applyDiscount = (amount, percent) => {
  */
 
 // TODO: write applyTwice here.
+
+export const formatPrice = (amount, currency = "EGP") => `${amount} ${currency}`;
+
+export function applyTwice(fn, value) {
+  return fn(fn(value));
+}
