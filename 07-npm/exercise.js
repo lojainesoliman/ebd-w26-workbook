@@ -63,4 +63,4 @@ export function addDays(dateString, days) {
  *
  * @type {string}
  */
-export const myPackage = "chalk";
+export const myPackage = "ms";
