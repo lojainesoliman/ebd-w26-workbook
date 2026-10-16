@@ -24,9 +24,9 @@
  * @returns {{ name: string, price: number }}
  */
 export function readForm() {
-  // TODO: read .value off each input. Trim the name, and convert the price
-  // with Number().
-  throw new Error("readForm is not written yet");
+  const name = document.querySelector("#name").value.trim();
+  const price = Number(document.querySelector("#price").value);
+  return { name, price };
 }
 
 /**
@@ -35,8 +35,8 @@ export function readForm() {
  * @returns {void}
  */
 export function clearForm() {
-  // TODO: set each input's .value to an empty string.
-  throw new Error("clearForm is not written yet");
+  document.querySelector("#name").value = "";
+  document.querySelector("#price").value = "";
 }
 
 /**
@@ -52,9 +52,27 @@ export function clearForm() {
  * @returns {void}
  */
 export function renderList(items) {
-  // TODO: empty #list first, then build one card per item — the same card
-  // shape as module 12.
-  throw new Error("renderList is not written yet");
+  const list = document.querySelector("#list");
+
+  // Remove the old cards first, so we replace instead of adding.
+  for (const card of list.querySelectorAll(".card")) {
+    card.remove();
+  }
+
+  for (const item of items) {
+    const card = document.createElement("li");
+    card.classList.add("card");
+
+    const heading = document.createElement("h3");
+    heading.textContent = item.name;
+
+    const priceText = document.createElement("p");
+    priceText.classList.add("price");
+    priceText.textContent = `${item.price} EGP`;
+
+    card.append(heading, priceText);
+    list.append(card);
+  }
 }
 
 /**
@@ -86,4 +104,45 @@ export function renderList(items) {
  * Remember `export`.
  */
 
-// TODO: write wireForm here.
+// The real data lives here. The page is just a picture of this array.
+const items = [];
+
+export function wireForm() {
+  const form = document.querySelector("#product-form");
+
+  // Only attach the listener once, even if wireForm is called twice.
+  if (form.dataset.wired) {
+    return;
+  }
+  form.dataset.wired = "yes";
+
+  form.addEventListener("submit", (event) => {
+    // 1. Stop the browser reloading the page.
+    event.preventDefault();
+
+    // 2. Read the form.
+    const { name, price } = readForm();
+    const error = document.querySelector("#error");
+
+    // 3. No name? Say so and stop.
+    if (!name) {
+      error.textContent = "Give the product a name.";
+      return;
+    }
+
+    // 4. No price, or not more than 0? Say so and stop.
+    if (!(price > 0)) {
+      error.textContent = "Give the product a price.";
+      return;
+    }
+
+    // 5. All good: clear the error, save the item, redraw, empty the boxes.
+    error.textContent = "";
+    items.push({ name, price });
+    renderList(items);
+    clearForm();
+  });
+}
+
+// Turn the form on when the page opens in the browser.
+wireForm();
